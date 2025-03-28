@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: write   # Needed to create a branch
-  issues: read      # Needed to access issue details
+  issues: write      # Needed to access issue details
 
 
 jobs:
