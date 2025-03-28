@@ -30,8 +30,11 @@ jobs:
           ISSUE_TITLE="${{ github.event.issue.title }}"
           REPO="${{ github.repository }}"
           echo "Github repo - $REPO"
+
           PROJECT_NO=$(echo $REPO | cut -d'/' -f2| cut -d'-' -f1)
+          echo "Project # - $PROJECT_NO"
           OWNER=$(echo $REPO | cut -d'/' -f1)
+
           SLUG=$(echo "$ISSUE_TITLE" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9-' | tr ' ' '-')
           BRANCH_NAME="feature/${PROJECT_NO}.${ISSUE_NUMBER}-${SLUG}"
 
