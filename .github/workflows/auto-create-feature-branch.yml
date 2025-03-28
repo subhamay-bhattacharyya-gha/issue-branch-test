@@ -1,0 +1,42 @@
+name: Auto Create Feature Branch on Issue Assignment
+
+on:
+  issues:
+    types: [assigned]
+
+jobs:
+  create_branch:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'assigned'
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: Create Branch from Main
+        env:
+          GH_TOKEN: ${{ secrets.GIT_TOKEN }}
+        run: |
+          ISSUE_NUMBER=${{ github.event.issue.number }}
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          REPO="${{ github.repository }}"
+          OWNER=$(echo $REPO | cut -d'/' -f1)
+          SLUG=$(echo "$ISSUE_TITLE" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9-' | tr ' ' '-')
+          BRANCH_NAME="feature/${ISSUE_NUMBER}-${SLUG}"
+
+          echo "Creating branch: $BRANCH_NAME"
+
+          # Get latest SHA of main branch
+          SHA=$(curl -s -H "Authorization: token $GH_TOKEN" \
+            https://api.github.com/repos/$REPO/git/ref/heads/main \
+            | jq -r .object.sha)
+
+          # Create the new branch
+          curl -s -X POST -H "Authorization: token $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"ref\":\"refs/heads/$BRANCH_NAME\",\"sha\":\"$SHA\"}" \
+            https://api.github.com/repos/$REPO/git/refs
