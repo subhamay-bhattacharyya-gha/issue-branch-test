@@ -31,12 +31,12 @@ jobs:
           echo "Creating branch: $BRANCH_NAME"
 
           # Get latest SHA of main branch
-          SHA=$(curl -s -H "Authorization: token $GIT_TOKEN" \
+          SHA=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             https://api.github.com/repos/$REPO/git/ref/heads/main \
             | jq -r .object.sha)
 
           # Create the new branch
-          curl -s -X POST -H "Authorization: token $GIT_TOKEN" \
+          curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"ref\":\"refs/heads/$BRANCH_NAME\",\"sha\":\"$SHA\"}" \
             https://api.github.com/repos/$REPO/git/refs
