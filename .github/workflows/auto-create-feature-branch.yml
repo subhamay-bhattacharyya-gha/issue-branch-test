@@ -4,6 +4,11 @@ on:
   issues:
     types: [assigned]
 
+permissions:
+  contents: write   # Needed to create a branch
+  issues: read      # Needed to access issue details
+
+
 jobs:
   create_branch:
     runs-on: ubuntu-latest
