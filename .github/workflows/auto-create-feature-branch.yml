@@ -45,3 +45,11 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{\"ref\":\"refs/heads/$BRANCH_NAME\",\"sha\":\"$SHA\"}" \
             https://api.github.com/repos/$REPO/git/refs
+
+      - name: Log Issue Details
+        run: |
+          echo "🆔 Issue Number: ${{ github.event.issue.number }}"
+          echo "📄 Issue Title: ${{ github.event.issue.title }}"
+          echo "👤 Assigned to: ${{ github.event.assignee.login }}"
+          echo "🔗 Issue URL: ${{ github.event.issue.html_url }}"
+
