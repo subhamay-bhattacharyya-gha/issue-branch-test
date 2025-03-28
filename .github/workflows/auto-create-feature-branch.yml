@@ -29,9 +29,10 @@ jobs:
           ISSUE_NUMBER=${{ github.event.issue.number }}
           ISSUE_TITLE="${{ github.event.issue.title }}"
           REPO="${{ github.repository }}"
+          PROJECT_NO=$(echo $REPO | cut -d'-' -f1)
           OWNER=$(echo $REPO | cut -d'/' -f1)
           SLUG=$(echo "$ISSUE_TITLE" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9-' | tr ' ' '-')
-          BRANCH_NAME="feature/${ISSUE_NUMBER}-${SLUG}"
+          BRANCH_NAME="feature/${PROJECT_NO}.${ISSUE_NUMBER}-${SLUG}"
 
           echo "Creating branch: $BRANCH_NAME"
 
