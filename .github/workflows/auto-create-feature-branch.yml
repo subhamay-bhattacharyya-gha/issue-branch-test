@@ -31,7 +31,7 @@ jobs:
           echo "Creating branch: $BRANCH_NAME"
 
           # Get latest SHA of main branch
-          SHA=$(curl -s -H "Authorization: token $GH_TOKEN" \
+          SHA=$(curl -s -H "Authorization: token $GIT_TOKEN" \
             https://api.github.com/repos/$REPO/git/ref/heads/main \
             | jq -r .object.sha)
 
