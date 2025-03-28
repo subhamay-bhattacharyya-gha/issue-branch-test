@@ -24,7 +24,7 @@ jobs:
 
       - name: Create Branch from Main
         env:
-          GH_TOKEN: ${{ secrets.GIT_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ISSUE_NUMBER=${{ github.event.issue.number }}
           ISSUE_TITLE="${{ github.event.issue.title }}"
@@ -36,12 +36,12 @@ jobs:
           echo "Creating branch: $BRANCH_NAME"
 
           # Get latest SHA of main branch
-          SHA=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+          SHA=$(curl -s -H "Authorization: token $GH_TOKEN" \
             https://api.github.com/repos/$REPO/git/ref/heads/main \
             | jq -r .object.sha)
 
           # Create the new branch
-          curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" \
+          curl -s -X POST -H "Authorization: token $GH_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"ref\":\"refs/heads/$BRANCH_NAME\",\"sha\":\"$SHA\"}" \
             https://api.github.com/repos/$REPO/git/refs
