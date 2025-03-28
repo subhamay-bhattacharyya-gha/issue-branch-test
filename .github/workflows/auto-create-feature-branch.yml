@@ -36,7 +36,7 @@ jobs:
             | jq -r .object.sha)
 
           # Create the new branch
-          curl -s -X POST -H "Authorization: token $GH_TOKEN" \
+          curl -s -X POST -H "Authorization: token $GIT_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"ref\":\"refs/heads/$BRANCH_NAME\",\"sha\":\"$SHA\"}" \
             https://api.github.com/repos/$REPO/git/refs
